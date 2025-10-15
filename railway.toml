@@ -4,3 +4,4 @@ buildCommand = "./mvnw clean package -DskipTests"
 
 [build.env]
 JAVA_VERSION = "21"
+
