@@ -1,15 +1,15 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://yamabiko.proxy.rlwy.net:54702/railway
     username: postgres
-    password: postgres
+    password: RImtDbOCrLFCnJxeWWhPzhMENQETJpTD
 
 
     #spring:
     #  datasource:
-    #    url: jdbc:postgresql://crossover.proxy.rlwy.net:51973/railway
+    #    url: jdbc:postgresql://yamabiko.proxy.rlwy.net:54702/railway
     #    username: postgres
-    #    password: kbUpnqjAtOvJgitGTUeijUrSwCPrPZhC
+    #    password: RImtDbOCrLFCnJxeWWhPzhMENQETJpTD
 
     driver-class-name: org.postgresql.Driver
     hikari:
