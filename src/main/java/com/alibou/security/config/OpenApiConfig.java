@@ -33,7 +33,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 ),
                 @Server(
                         description = "PROD ENV",
-                        url = "https://vigilant-youthfulness-production.up.railway.app"
+                        url = "pharmrevealbackend-production.up.railway.app"
                 )
         },
         security = {
