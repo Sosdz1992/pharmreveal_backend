@@ -76,8 +76,10 @@ public class DrugExcelExportCustomService {
             }
 
             for (int i = 0; i < columns.size(); i++) {
-                sheet.autoSizeColumn(i);
+                int headerLength = columns.get(i).length();
+                sheet.setColumnWidth(i, (headerLength + 5) * 256);
             }
+
 
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             workbook.write(out);
