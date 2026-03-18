@@ -1,19 +1,12 @@
 spring:
   datasource:
-    url: jdbc:postgresql://yamabiko.proxy.rlwy.net:54702/railway
-    username: postgres
-    password: RImtDbOCrLFCnJxeWWhPzhMENQETJpTD
-
-
-    #spring:
-    #  datasource:
-    #    url: jdbc:postgresql://yamabiko.proxy.rlwy.net:54702/railway
-    #    username: postgres
-    #    password: RImtDbOCrLFCnJxeWWhPzhMENQETJpTD
-
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
       auto-commit: false
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -54,10 +47,10 @@ server:
 application:
   security:
     jwt:
-      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-      expiration: 86400000 # a day
+      secret-key: ${JWT_SECRET}
+      expiration: ${JWT_EXPIRATION:86400000}
       refresh-token:
-        expiration: 604800000 # 7 days
+        expiration: ${JWT_REFRESH_EXPIRATION:604800000}# 7 days
 file:
   storage:
     path: /documents
