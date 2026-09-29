@@ -1,20 +1,22 @@
 package com.alibou.security.drug;
 
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/drugs")
 @CrossOrigin(origins = "*")
@@ -131,13 +133,24 @@ public class DrugController {
     @PostMapping("/upload-async")
     public ResponseEntity<String> uploadFileAsync(@RequestParam("file") MultipartFile file) throws IOException {
 
-        byte[] fileBytes = file.getBytes(); // читаем в память
+        String fileName = file.getOriginalFilename();
+        // сохраняем на диск: multipart-файл удаляется после ответа, а читать xlsx из файла дешевле, чем из памяти
+        Path tempFile = Files.createTempFile("drugs-import-", ".xlsx");
+        file.transferTo(tempFile);
 
         CompletableFuture.runAsync(() -> {
-            try (InputStream inputStream = new ByteArrayInputStream(fileBytes)) {
-                importService.importDrugsAsync(inputStream);
+            try {
+                log.info("Импорт файла {} начат", fileName);
+                importService.importDrugsAsync(tempFile.toFile());
+                log.info("Импорт файла {} завершён", fileName);
             } catch (Exception e) {
-                e.printStackTrace(); // или логгировать
+                log.error("Импорт файла {} завершился ошибкой", fileName, e);
+            } finally {
+                try {
+                    Files.deleteIfExists(tempFile);
+                } catch (IOException e) {
+                    log.warn("Не удалось удалить временный файл {}", tempFile, e);
+                }
             }
         });
 
